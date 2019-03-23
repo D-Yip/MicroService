@@ -1,4 +1,4 @@
-package com.ysj.user.dto;
+package com.ysj.thrift.user.dto;
 
 import java.io.Serializable;
 

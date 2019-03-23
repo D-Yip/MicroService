@@ -1,7 +1,7 @@
 package com.ysj.user.controller;
 
 import com.ysj.thrift.user.UserInfo;
-import com.ysj.user.dto.UserDTO;
+import com.ysj.thrift.user.dto.UserDTO;
 import com.ysj.user.redis.RedisClient;
 import com.ysj.user.response.LoginResponse;
 import com.ysj.user.response.Response;
@@ -11,15 +11,13 @@ import org.apache.thrift.TException;
 import org.apache.tomcat.util.buf.HexUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.MessageDigest;
 import java.util.Random;
 
 @RestController
+@RequestMapping(value = "/user")
 public class UserController {
 
     @Autowired
@@ -111,6 +109,11 @@ public class UserController {
             return Response.exception(e);
         }
         return Response.SUCCESS;
+    }
+
+    @RequestMapping(value = "/authentication",method = RequestMethod.POST)
+    public UserDTO authentication(@RequestHeader("token")String token){
+        return redisClient.get(token);
     }
 
     private UserDTO toDTO(UserInfo userInfo) {
